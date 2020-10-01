@@ -1,0 +1,62 @@
+<%- include('./partials/header') %>
+<%- include('./partials/navbar'); %>
+<br>
+<br>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Blog</title>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4" style="font-family: 'Abril Fatface', cursive;">New Article</h1>
+
+    <form action="/articles" enctype="multipart/form-data" method="POST">
+      <div class="form-group">
+      <label for="title">Title</label>
+      <input required value="" type="text" name="title" id="title" class="form-control">
+    </div>
+
+    <div class="form-group">
+    <label for="title">Category</label>
+    <br>
+    <select name="category">
+      <option value="action">Action</option>
+      <option value="horror">Horror</option>
+      <option value="romance">Romance</option>
+      <option value="scifi">Scifi</option>
+    </select>
+  </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" id="description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="file" id="file" name="image"/>
+     </div>
+    <div class="form-group">
+      <label for="markdown">Markdown</label>
+      <textarea required name="markdown" id="markdown" class="form-control"></textarea>
+    </div>
+
+    <a href="/homepage" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+<!--
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    axios.post('/update-cart',pizza).then(function(res){ }).catch(e=>console.log(e));
+  </script> -->
+
+</body>
+</html>

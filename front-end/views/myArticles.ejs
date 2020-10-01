@@ -1,0 +1,84 @@
+<%- include('./partials/header') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand"  href="/homepage">Bloggy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+
+        <% if(!user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+       <% } else { %>
+         <div class="d-inline-flex ml-3 mr-2 p-2 bd-highlight">
+
+           <a class="nav-link mt-4" href="#"><%= user.username %> </a>
+           <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d3c59320-7092-4e49-a860-adb32f58ccea/d4flaqu-199b8304-28bf-4233-8713-2319d4437b7b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDNjNTkzMjAtNzA5Mi00ZTQ5LWE4NjAtYWRiMzJmNThjY2VhXC9kNGZsYXF1LTE5OWI4MzA0LTI4YmYtNDIzMy04NzEzLTIzMTlkNDQzN2I3Yi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.QJsHGUt4VHl_cvMPr35_ObPkBFzYvaU58LpX6KYpN0U" alt="" class="rounded-circle" width="75" height="75">
+         </div>
+         <form  action="/logout"  class="mt-4" method="post">
+            <input class="btn btn-primary mt-1 ml-1" style="background-color:transparent; color:black; border:none;" type="submit" value="Logout">
+         </form>
+        <% } %>
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+<body>
+
+<% if(articles.length>0) { %>
+<% articles.forEach(article => { %>
+    <div class="card-body">
+      <h1 class="card-title text-warning display-4"><%= article.title %></h1>
+
+      <button type="button" class="btn btn-secondary mt-2 mb-2"><%= article.category %></button>
+      <br>
+      <% if(article.image !='') { %>
+         <img src="<%=article.image %>" class="zoom-dark" width="400px" height="300px" alt="Image not found">
+      <% } %>
+
+       <div class="card-subtitle text-muted mb-2">
+
+        <div class="d-inline-flex p-2">
+
+
+
+          <div class="card-subtitle text-muted mb-2">
+            <a href="/articles/readMore/<%=article._id%>" class="btn btn-warning mt-5" style="color:#ffffff; background-color:#95afc0; border:none;">Read More</a>
+            <form action="/articles/deleteArticle/<%=article._id%>?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit"class="btn btn-warning mt-5" style="background-color:#686de0; color:#ffffff; border:none;">Delete</button>
+            </form>
+                      <a href="/articles/editArticle/<%=article._id %>" class="btn btn-success mt-5"  style="background-color:#686de0; border:none;">Edit</a>
+          </div>
+      </div>
+
+      <div class="card-subtitle text-muted mb-2">
+
+      </div>
+    </div>
+
+<% }) %>
+<% } else {  %>
+  <div class="h-100 row align-items-center d-flex flex-column mt-4 mb-1">
+  <h1 class="card-title display-4" style="color:#30336b;">No Articles </h1>
+  <img src="https://i.imgur.com/fMBwWAr.png" width="800" height="600" alt="SWAG">
+  <br>
+  <button class="btn btn-warning" style=" background-color:#e056fd;  border:0;"><a href="/homepage" style="color:white; text-decoration:none;">Go back</a></button>
+  <a href='https://www.freepik.com/vectors/technology'>Technology vector created by stories - www.freepik.com</a>
+</div>
+<% } %>
+
+</body>

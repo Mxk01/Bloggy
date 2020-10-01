@@ -1,0 +1,351 @@
+<%- include('./partials/header') %>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand"  href="#">Bloggy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+
+        <% if(!user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+       <% } else { %>
+         <div class="d-inline-flex ml-3 mr-2 p-2 bd-highlight">
+
+           <a class="nav-link mt-4" href="/articles/myArticle""><%= user.username %> </a>
+           <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d3c59320-7092-4e49-a860-adb32f58ccea/d4flaqu-199b8304-28bf-4233-8713-2319d4437b7b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDNjNTkzMjAtNzA5Mi00ZTQ5LWE4NjAtYWRiMzJmNThjY2VhXC9kNGZsYXF1LTE5OWI4MzA0LTI4YmYtNDIzMy04NzEzLTIzMTlkNDQzN2I3Yi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.QJsHGUt4VHl_cvMPr35_ObPkBFzYvaU58LpX6KYpN0U" alt="" class="rounded-circle" width="75" height="75">
+         </div>
+         <form  action="/logout"  class="mt-4" method="post">
+            <input class="btn btn-primary mt-1 ml-1" style="background-color:transparent; color:black; border:none;" type="submit" value="Logout">
+         </form>
+        <% } %>
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title><%=user.username%></title>
+</head>
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <body>
+<!--
+    <div class="container mt-2 mb-5">
+    <a  href="/articles/testHP" class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;  border:none;">Action</a>
+    <a href="/articles/testHP" class="btn btn-success   mr-2 categoryLink" style="background-color:#7f8c8d;  border:none;">Horror</a>
+    <a  href="/articles/testHP" class="btn btn-success  mr-2 categoryLink" style="background-color:#7f8c8d;   border:none;">Romance</a>
+     <a  href="/articles/testHP" class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;    border:none;">Sci-fi</a>
+    <a href="/articles/testHP" class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;   border:none;">Drama</a>
+  <a href="/articles/testHP" class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;   border:none;">Tech</a>
+    <a  href="/articles/testHP" class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;   border:none;">Life</a>
+  <a href="/articles/testHP"  class="btn btn-success mr-2 categoryLink" style="background-color:#7f8c8d;   border:none;">Gossip</a>
+    </div> -->
+<form action="/articles/filteredArticles" class="d-flex justify-content-center" method="POST">
+    <select name="filteredCategory" class="mr-2 selectpicker" style="width:400px;">
+      <option value="action">Action</option>
+      <option value="horror">Horror</option>
+      <option value="romance">Romance</option>
+      <option value="scifi">Scifi</option>
+    </select>
+    <input type="submit" style="background-color:#686de0; color:white; padding:1rem; border:none;" name="" value="Find Articles">
+</form>
+
+
+    <div class="container">
+
+  <a href="/articles/new" class="btn btn-success" style="background-color:#686de0; border:none;">New Article</a>
+  <a href="/articles/myArticle" class="btn btn-success" style="background-color:#95afc0; border:none;">My article</a>
+  <% articles.forEach(article => { %>
+    <div class="card mt-4 mb-3">
+      <div class="card-body">
+        <h1 class="card-title text-warning display-4"><%= article.title %></h1>
+        <div class="d-flex flex-column">
+        <% if(article.image !='') { %>
+           <img src="<%=article.image %>" class="zoom-dark" width="400px" height="250px" alt="Image not found">
+        <% } %>
+
+
+      </div>
+           <button type="button" class="btn btn-secondary mt-2 mb-2" width="300px"><%= article.category %></button>
+         <div class="card-subtitle text-muted mb-2">
+
+          <%= article.description %>
+
+          <br>
+          <p class="mt-2"><%= article.markdown %></p>
+
+            <a href="/articles/readMore/<%=article._id%>" class="btn btn-warning mt-5" style="color:#ffffff; background-color:#eb3b5a; border:none;">Read More</a>
+            <br>
+          <div class="d-inline-flex p-2">
+
+          <form action="/articles/like/<%= article._id %>?_method=PUT" method="POST">
+            <button type="submit" style="border:none; background:transparent; outline:none;">
+              <i style="background:transparent; border:none;" class="fa fa-thumbs-up"></i>
+            </button>
+          </form>
+          <form action="/articles/dislike/<%= article._id %>?_method=PUT" method="POST">
+            <button style="border:none; background:transparent; outline:none;">
+                        <i  type="submit" class="fa  fa-thumbs-down"></i>
+            </button>
+          </form>
+
+            <span class="mr-2"><%= article.likes.length%></span> <a class="like" id="like"> Likes</a>
+            <br>
+            <span class="ml-2" style="color:#2f3640;">
+              <br>
+              </span>
+        </div>
+        <p><%=moment(article.createdAt).format('MMMM Do YYYY, h:mm a')%></p>
+        <div class="card-subtitle text-muted mb-2">
+
+        </div>
+      </div>
+
+    </div>
+
+  <% }) %>
+<br>
+<br>
+<% if(articles.length>0) { %>
+      <div class="text-center">
+        <% if (pages > 0) { %>
+        <ul class="pagination ml-2">
+          <% if (current == 1) { %>
+            <li class="page-item disabled"><a class="page-link">First</a></li> <%# if the current page is 1 disable this  ,no need to go to page 1 %>
+        <% } else { %>
+            <li><a class="page-link" href="/homepage?page=1">First</a></li> <%# if we are on a different page ,this should be accessible %>
+        <% } %>
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+            <li class="page-item disabled"><a>...</a></li>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+            <% if (i == current) { %> <%# if this is the current page display this element with the active class,I think the color is blue  %>
+                <li class="page-item active"><a class="page-link"><%= i %></a></li>
+            <% } else { %>
+
+                <li><a class="page-link" href="/homepage?page=<%= i %>"><%= i %></a></li>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < pages) { %>
+              <%# displaying .... between our page links  E.g  1 ... 4 %>
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+            <% } %>
+        <% } %>
+        <%# so checking if the current page is last one   Remember pages is the last page %>
+        <% if (current == pages) { %>
+          <%# if it is display this %>
+            <li class="page-item disabled"><a class="page-link">Last</a></li>
+        <% } else { %>
+          <%# otherwise display this %>
+            <li><a class="page-link" href="./homepage?page=<%= pages %>">Last</a></li>
+        <% } %>
+        </ul>
+        <% } %>
+      </div>
+  </div>
+      </div>
+  <%}%>
+  <!-- Footer -->
+  <footer class="page-footer font-small unique-color-dark">
+
+    <div style="background-color: #6351ce;">
+      <div class="container">
+
+        <!-- Grid row-->
+        <div class="row py-4 d-flex align-items-center">
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+            <h6 class="mb-0" style="color:white;">Get connected with us on social networks!</h6>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+            <!-- Facebook -->
+            <a class="fb-ic">
+              <i class="fa fa-facebook-f white-text mr-4"> </i>
+            </a>
+            <!-- Twitter -->
+            <a class="tw-ic">
+              <i class="fa fa-twitter white-text mr-4"> </i>
+            </a>
+            <!-- Google +-->
+            <a class="gplus-ic">
+              <i class="fa fa-google-plus-g white-text mr-4"> </i>
+            </a>
+            <!--Linkedin -->
+            <a class="li-ic">
+              <i class="fa fa-linkedin-in white-text mr-4"> </i>
+            </a>
+            <!--Instagram-->
+            <a class="ins-ic">
+              <i class="fa fa-instagram white-text"> </i>
+            </a>
+
+          </div>
+          <!-- Grid column -->
+
+        </div>
+        <!-- Grid row-->
+
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left mt-5">
+
+      <!-- Grid row -->
+      <div class="row mt-3">
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+
+          <!-- Content -->
+          <h6 class="text-uppercase font-weight-bold">Company name</h6>
+          <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+          <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
+            consectetur
+            adipisicing elit.</p>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+
+          <!-- Links -->
+          <h6 class="text-uppercase font-weight-bold">Products</h6>
+          <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+          <p>
+            <a href="#!">MDBootstrap</a>
+          </p>
+          <p>
+            <a href="#!">MDWordPress</a>
+          </p>
+          <p>
+            <a href="#!">BrandFlow</a>
+          </p>
+          <p>
+            <a href="#!">Bootstrap Angular</a>
+          </p>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+
+          <!-- Links -->
+          <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+          <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+          <p>
+            <a href="#!">Your Account</a>
+          </p>
+          <p>
+            <a href="#!">Become an Affiliate</a>
+          </p>
+          <p>
+            <a href="#!">Shipping Rates</a>
+          </p>
+          <p>
+            <a href="#!">Help</a>
+          </p>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+          <!-- Links -->
+          <h6 class="text-uppercase font-weight-bold">Contact</h6>
+          <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+          <p>
+            <i class="fa fa-home mr-3"></i> New York, NY 10012, US</p>
+          <p>
+            <i class="fa fa-envelope mr-3"></i> info@example.com</p>
+          <p>
+            <i class="fa fa-phone mr-3"></i> + 01 234 567 88</p>
+          <p>
+            <i class="fa fa-print mr-3"></i> + 01 234 567 89</p>
+
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+      <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  // Loop through buttons
+  // Get button text on click
+  // Pass text to backend through axios
+ // Store text in article.category then save it
+ // Render homepage;
+  let categories = document.querySelectorAll('.categoryLink');
+
+  Array.from(categories).forEach((category)=>{
+    category.addEventListener('click',()=>{
+       axios.post('/articles/testHP',category.innerText).then(function(res){ // This can be used in the nodejs  post request in cartController;
+
+    });
+    // let options =
+    // {
+    //   method:'POST',
+    //   headers: { 'Content-Type':'application/json'},
+    //   body: JSON.stringify(category)
+    // }
+
+    // fetch('/articles/testHP',options);
+  })
+});
+
+
+
+// let mainImg = document.querySelector('img');
+//
+//     mediumZoom('.zoom-dark',{background:'#2f3640'})
+
+</script>

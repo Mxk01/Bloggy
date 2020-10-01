@@ -1,0 +1,90 @@
+<%- include('./partials/header') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand"  href="/homepage">Bloggy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+
+        <% if(!user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+       <% } else { %>
+         <div class="d-inline-flex ml-3 mr-2 p-2 bd-highlight">
+
+           <a class="nav-link mt-4" href="#"><%= user.username %> </a>
+           <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d3c59320-7092-4e49-a860-adb32f58ccea/d4flaqu-199b8304-28bf-4233-8713-2319d4437b7b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDNjNTkzMjAtNzA5Mi00ZTQ5LWE4NjAtYWRiMzJmNThjY2VhXC9kNGZsYXF1LTE5OWI4MzA0LTI4YmYtNDIzMy04NzEzLTIzMTlkNDQzN2I3Yi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.QJsHGUt4VHl_cvMPr35_ObPkBFzYvaU58LpX6KYpN0U" alt="" class="rounded-circle" width="75" height="75">
+         </div>
+         <form  action="/logout"  class="mt-4" method="post">
+            <input class="btn btn-primary mt-1 ml-1" style="background-color:transparent; color:black; border:none;" type="submit" value="Logout">
+         </form>
+        <% } %>
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<br>
+<br>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Blog</title>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4" style="font-family: 'Abril Fatface', cursive;">New Article</h1>
+   <%# Method override again to update our article %>
+    <form action="/articles/changeArticle/<%=article._id%>?_method=PUT" enctype="multipart/form-data" method="POST">
+      <div class="form-group">
+      <label for="title">Title</label>
+      <input required value="<%= article.title %>" type="text" name="title" id="title" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" id="description" class="form-control"><%= article.description %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="markdown">Markdown</label>
+      <textarea required name="markdown" id="markdown" class="form-control"><%= article.markdown %></textarea>
+    </div>
+    <div class="form-group">
+    <label for="title">Category</label>
+    <br>
+    <select name="category">
+      <option value="action">Action</option>
+      <option value="horror">Horror</option>
+      <option value="romance">Romance</option>
+      <option value="scifi">Scifi</option>
+    </select>
+  </div>
+    <div class="form-group">
+        <input type="file" id="file" name="image"/>
+     </div>
+    <a href="/homepage" class="btn btn-secondary">Cancel</a>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+</body>
+</html>

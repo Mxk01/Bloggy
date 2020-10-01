@@ -1,0 +1,3 @@
+Welcome back.This tutorial will be much shorter than the previous ones.
+In this tutorial I will show you how to make blog articles unique to the user
+First let's go to our Article model 

@@ -1,0 +1,105 @@
+<%- include('./partials/header') %>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand"  href="#">Bloggy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+
+        <% if(!user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+       <% } else { %>
+         <div class="d-inline-flex ml-3 mr-2 p-2 bd-highlight">
+
+           <a class="nav-link mt-4" href="/articles/myArticle""><%= user.username %> </a>
+           <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d3c59320-7092-4e49-a860-adb32f58ccea/d4flaqu-199b8304-28bf-4233-8713-2319d4437b7b.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDNjNTkzMjAtNzA5Mi00ZTQ5LWE4NjAtYWRiMzJmNThjY2VhXC9kNGZsYXF1LTE5OWI4MzA0LTI4YmYtNDIzMy04NzEzLTIzMTlkNDQzN2I3Yi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.QJsHGUt4VHl_cvMPr35_ObPkBFzYvaU58LpX6KYpN0U" alt="" class="rounded-circle" width="75" height="75">
+         </div>
+         <form  action="/logout"  class="mt-4" method="post">
+            <input class="btn btn-primary mt-1 ml-1" style="background-color:transparent; color:black; border:none;" type="submit" value="Logout">
+         </form>
+        <% } %>
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title><%=user.username%></title>
+</head>
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+      <div class="container">
+<% filteredArticles.forEach(article => { %>
+  <div class="card mt-4 mb-3">
+    <div class="card-body">
+      <h1 class="card-title text-warning display-4"><%= article.title %></h1>
+      <div class="d-flex flex-column">
+
+      <% if(article.image === '' || undefined) { %>
+  <img src="https://www.carsfrombanks.com/frontend/assets/images/placeholder/inventory-full-placeholder.png" width="500" alt=""></img>
+      <% } else { %>
+          <img src="<%=article.image%>" class="zoom-dark" width="400px" height="300px">
+        <% } %>
+
+    </div>
+         <button type="button" class="btn btn-secondary mt-2 mb-2" width="300px"><%= article.category %></button>
+       <div class="card-subtitle text-muted mb-2">
+
+        <%= article.description %>
+
+        <br>
+        <p class="mt-2"><%= article.markdown %></p>
+        <a href="/articles/readMore/<%=article._id%>" class="btn btn-warning mt-5" style="color:#ffffff; background-color:#95afc0; border:none;">Read More</a>
+        <br>
+        <div class="d-inline-flex p-2">
+
+        <form action="/articles/like/<%= article._id %>?_method=PUT" method="POST">
+          <button type="submit" style="border:none; background:transparent; outline:none;">
+            <i style="background:transparent; border:none;" class="fa fa-thumbs-up"></i>
+          </button>
+        </form>
+        <form action="/articles/dislike/<%= article._id %>?_method=PUT" method="POST">
+          <button style="border:none; background:transparent; outline:none;">
+                      <i  type="submit" class="fa  fa-thumbs-down"></i>
+          </button>
+        </form>
+
+          <span class="mr-2"><%= article.likes.length%></span> <a class="like" id="like"> Likes</a>
+
+          <br>
+
+
+      </div>
+      <br>
+<p><%=article.createdAt%></p>
+      <div class="card-subtitle text-muted mb-2">
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<% }) %>
